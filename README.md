@@ -3,14 +3,14 @@
 [[Paper]](https://github.com/XGGNet/StegaNeRF) [[Website]](https://xggnet.github.io/StegaNeRF/)
 
 <div>
-<img src="doc/lego_ren.gif" height="150"/>
-<!-- <img src="doc/lego_res5.gif" height="150"/> -->
-<img src="doc/lego_res.gif" height="150"/>
-<img src="doc/lego_rec.gif" height="150"/>
-<img src="doc/drums_ren.gif" height="150"/>
-<img src="doc/drums_res.gif" height="150"/>
-<!-- <img src="doc/flower_res.gif" height="150"/> -->
-<img src="doc/drums_rec.gif" height="150"/> 
+<img src="doc/lego_ren.gif" height="120"/>
+<!-- <img src="doc/lego_res5.gif" height="120"/> -->
+<img src="doc/lego_res.gif" height="120"/>
+<img src="doc/lego_rec.gif" height="120"/>
+<img src="doc/drums_ren.gif" height="120"/>
+<img src="doc/drums_res.gif" height="120"/>
+<!-- <img src="doc/flower_res.gif" height="120"/> -->
+<img src="doc/drums_rec.gif" height="120"/> 
 
 
 
