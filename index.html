@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Decomposing NeRF for Editing via Feature Field Distillation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="web/offcanvas.css" rel="stylesheet">
+    <!--    <link rel="icon" href="img/favicon.gif" type="image/gif">-->
+
+<script>
+function initComparisons() {
+  var x, i;
+  /*find all elements with an "overlay" class:*/
+  x = document.getElementsByClassName("img-comp-overlay");
+  for (i = 0; i < x.length; i++) {
+    /*once for each "overlay" element:
+    pass the "overlay" element as a parameter when executing the compareImages function:*/
+    compareImages(x[i]);
+  }
+  function compareImages(img) {
+    var slider, img, clicked = 0, w, h;
+    /*get the width and height of the img element*/
+    w = img.offsetWidth;
+    h = img.offsetHeight;
+    /*set the width of the img element to 50%:*/
+    img.style.width = (w / 2) + "px";
+    /*create slider:*/
+    slider = document.createElement("DIV");
+    slider.setAttribute("class", "img-comp-slider");
+    /*insert slider*/
+    img.parentElement.insertBefore(slider, img);
+    /*position the slider in the middle:*/
+    slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
+    slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+    /*execute a function when the mouse button is pressed:*/
+    slider.addEventListener("mousedown", slideReady);
+    /*and another function when the mouse button is released:*/
+    window.addEventListener("mouseup", slideFinish);
+    /*or touched (for touch screens:*/
+    slider.addEventListener("touchstart", slideReady);
+    /*and released (for touch screens:*/
+    window.addEventListener("touchend", slideFinish);
+    function slideReady(e) {
+      /*prevent any other actions that may occur when moving over the image:*/
+      e.preventDefault();
+      /*the slider is now clicked and ready to move:*/
+      clicked = 1;
+      /*execute a function when the slider is moved:*/
+      window.addEventListener("mousemove", slideMove);
+      window.addEventListener("touchmove", slideMove);
+    }
+    function slideFinish() {
+      /*the slider is no longer clicked:*/
+      clicked = 0;
+    }
+    function slideMove(e) {
+      var pos;
+      /*if the slider is no longer clicked, exit this function:*/
+      if (clicked == 0) return false;
+      /*get the cursor's x position:*/
+      pos = getCursorPos(e)
+      /*prevent the slider from being positioned outside the image:*/
+      if (pos < 0) pos = 0;
+      if (pos > w) pos = w;
+      /*execute a function that will resize the overlay image according to the cursor:*/
+      slide(pos);
+    }
+    function getCursorPos(e) {
+      var a, x = 0;
+      e = (e.changedTouches) ? e.changedTouches[0] : e;
+      /*get the x positions of the image:*/
+      a = img.getBoundingClientRect();
+      /*calculate the cursor's x coordinate, relative to the image:*/
+      x = e.pageX - a.left;
+      /*consider any page scrolling:*/
+      x = x - window.pageXOffset;
+      return x;
+    }
+    function slide(x) {
+      /*resize the image:*/
+      img.style.width = x + "px";
+      /*position the slider:*/
+      slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+    }
+  }
+}
+</script>
+    
+</head>
+
+<body>
+  
+<div class="jumbotron jumbotron-fluid">
+    <div class="container"></div>
+    <h2>StegaNeRF: </h2>
+    <p>
+    <h2>Embedding Invisible Information within Neural Radiance Fields</h2>
+    <!-- <h3>NeurIPS 2022</h3> -->
+    <hr>
+    <p class="authors">
+        <a href="https://xggnet.github.io/"> Chenxin Li*</a>,
+        <a href="https://brandonyfeng.github.io/"> Brandon Y. Feng*</a>,
+        <a href="https://zhiwenfan.github.io/"> Zhiwen Fan*</a>,
+        <a href="https://xggnet.github.io/steganerf/">Panwang Pan</a>,
+        <a href="https://express.adobe.com/page/CAdrFMJ9QeI2y/">Zhangyang Wang</a>
+        <p>
+        *denotes equal contribution
+
+    </p>
+    <div class="btn-group" role="group" aria-label="Top menu">
+        <a class="btn btn-primary" href="https://arxiv.org/abs/2205.15585">Paper</a>
+        <a class="btn btn-primary" href="https://github.com/pfnet-research/distilled-feature-fields">Code</a>
+    </div>
+    <!--<p>
+    <br>
+    Project code can be found in the local directory named "code".
+    </p>-->
+</div>
+
+
+<div class="container" style="margin-top:-40px;">
+  <br>
+    <div class="section">
+        <h3 align="center">Abstract</h3>
+        <hr>
+        <p>
+	  <div style="width: 32%; float: right; margin-top:-10px margin-bottom:10px; margin-left:10px;">
+	    
+      <!-- <video class="video" autoplay="true" loop="true" style="" autoplay muted>
+              <source src="web/mov/demo.m4v">
+	    </video> -->
+
+      <div class="img-comp-container">
+        <div class="img-comp-img">
+    <div style="width: 250px;margin-top:20px">
+            <video class="video" autoplay="true" loop="true" autoplay muted>
+              <source src="web/trex_rec_resize.mp4">
+            </video>
+            <!-- <figcaption>  &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp &nbsp &nbsp&nbsp&nbsp &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp   Recovering
+            </figcaption> -->
+    </div>
+        </div>
+        <div class="img-comp-img img-comp-overlay">
+    <div style="width: 250px; margin-top:20px;">
+            <video class="video" autoplay="true" loop="true" autoplay muted>
+        <source src="web/trex_ren.mp4">
+            </video>   
+            <!-- <figcaption>  NeRF Renderings / Hidden Info.</figcaption> -->
+    </div> 
+    
+    <!-- <div style="width: 250px; margin-top:20px;">
+        <figcaption>  NeRF Renderings / Hidden Info.</figcaption>
+  </div> -->
+
+      </div>
+      <br><br><br><br><br><br><br><br><br>
+       <figcaption>  NeRF Renderings / Hidden Info.</figcaption>
+      
+          </div>
+   
+	  </div>
+   
+
+    Recent advances in neural rendering imply a future of widespread visual data distributions through sharing NeRF model weights.
+    However, while common visual data (images and videos) have standard approaches to embed ownership or copyright information explicitly or subtly, the problem remains unexplored for the emerging NeRF format.
+    <br>
+    We present StegaNeRF, a method for <a href="https://en.wikipedia.org/wiki/Steganography">steganographic</a> information embedding in NeRF renderings.
+    We design an optimization framework allowing accurate hidden information extractions from images rendered by NeRF, while preserving its original visual quality.
+    <br>
+    We perform experimental evaluations of our method under several potential deployment scenarios, and we further discuss the insights discovered through our analysis.
+    StegaNeRF signifies an initial exploration into the novel problem of instilling customizable, imperceptible, and recoverable information to NeRF renderings, with minimal impact to rendered images.
+  
+<!-- Emerging neural radiance fields (<a href="https://www.matthewtancik.com/nerf">NeRF</a>) are a promising scene representation for computer graphics, enabling high-quality 3D reconstruction and novel view synthesis from image observations.
+However, editing a scene represented by a NeRF is challenging, as the underlying connectionist representations such as MLPs or voxel grids are not object-centric or compositional.
+In particular, it has been difficult to selectively edit specific regions or objects.
+In this work, we tackle the problem of semantic scene decomposition of NeRFs to enable query-based local editing of the represented 3D scenes.
+We propose to distill the knowledge of off-the-shelf, self-supervised 2D image feature extractors such as <a href="https://arxiv.org/abs/2201.03546">CLIP-LSeg</a> or <a href="https://arxiv.org/abs/2104.14294">DINO</a> into a 3D feature field optimized in parallel to the radiance field.
+Given a user-specified query of various modalities such as text, an image patch, or a point-and-click selection, 3D feature fields semantically decompose 3D space without the need for re-training, and enables us to semantically select and edit regions in the radiance field.
+Our experiments validate that the <i>distilled feature fields (DFFs)</i> can transfer recent progress in 2D vision and language foundation models to 3D scene representations, enabling convincing 3D segmentation and selective editing of emerging neural graphics representations. -->
+
+        <br>
+        <br>
+        <b> TL;DR: </b> An initial exploration into instilling customizable, imperceptible, and recoverable information to NeRF renderings.
+        </p>
+	<!-- <img src="elements/images/MOTIVATION_V2.svg"
+             style="width:80%; margin-right:0px; margin-top:0px;">
+        <video class="video" autoplay="true" loop="true" style="width:20%" autoplay muted>
+          <source src="web/web-teaser.mp4">
+        </video>
+    </div> -->
+    <img src="elements/images/MOTIVATION_V2.svg"
+    style="width:65%; margin-right:0px; margin-top:-0px;">
+
+    <div style="width: 32%; float: right; margin-top:-150px">
+<video class="video" autoplay="true" loop="true" style="width: 100%;" autoplay muted>
+ <source src="web/web-teaser.mp4">
+</video>
+<figcaption> &nbsp &nbsp&nbsp&nbsp&nbsp &nbsp Illustration of NeRF Steganography</figcaption>
+      
+</div>
+</div>
+
+<br>
+
+    <div class="section">
+        <h2>Results</h2>
+        <hr>
+    </div>
+
+    <!-- <p>
+      Our <i>distilled feature fields (DFFs)</i> are trained by distilling 2D vision encoders such as <a href="https://arxiv.org/abs/2201.03546">LSeg</a> (CLIP-based zero-shot segmentation model) or <a href="https://arxiv.org/abs/2104.14294">DINO</a> (self-supervised model with good performances in part correspondense tasks) without any 3D or 2D annotations.
+      The learned feature fields can map every 3D coordinate to a semantic feature descriptor of that coordinate as well as radinace fields.
+      We can segment the 3D space and the corresponding radiance fields by querying a feature vector and calculating scores via dot product. -->
+    </p>
+
+    <div class="section">
+        <h3>Single-Scene Steganography</h3>
+        <p>
+          Applying our StegaNeRF pipeline on the selected scenes respectively. Note that: i)
+          The embedded information is hidden in the residual error of StegaNeRF renderings against the initial ones.
+          ii) The recovered customized information is varying slightly.
+        </p>
+        <img style="width:20%;" src="videos/lego_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+        <img style="width:20%;" src="videos/lego_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <img style="width:20%;" src="videos/lego_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+         <img style="width:20%;" src="videos/lego_rec.gif">
+
+         <br><br>
+        <!-- <figcaption>  &nbsp &nbsp Rendering Views &nbsp &nbsp &nbsp  Residual Error (x5).  &nbsp &nbsp &nbsp &nbsp   Residual Error (x25).  &nbsp &nbsp  Recovered Customized I
+        </figcaption> -->
+
+        <img style="width:20%;" src="videos/drums_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+        <img style="width:20%;" src="videos/drums_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <img style="width:20%;" src="videos/drums_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+         <img style="width:20%;" src="videos/drums_rec.gif">
+         <br><br>
+
+         <img style="width:20%;" src="videos/chair_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+         <img style="width:20%;" src="videos/chair_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+         <img style="width:20%;" src="videos/chair_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <img style="width:20%;" src="videos/chair_rec.gif">
+
+        <figcaption>  &nbsp &nbsp StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp Residual v.s. Initial Renderings (x5) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Residual (x25)  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp&nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Recovered Customized Info.
+        </figcaption>
+        
+	<br>
+
+  <div class="section">
+    <h3>Multi-Scene Steganography</h3>
+    <p>
+      Applying our StegaNeRF pipeline on multiple scenes at once. 
+    </p>
+    <img style="width:23%;" src="videos/fern_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+    <img style="width:23%;" src="videos/fern_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <img style="width:23%;" src="videos/fern_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+     <img style="width:17%;" src="videos/fern_rec.gif">
+
+     <br><br>
+    <!-- <figcaption>  &nbsp &nbsp Rendering Views &nbsp &nbsp &nbsp  Residual Error (x5).  &nbsp &nbsp &nbsp &nbsp   Residual Error (x25).  &nbsp &nbsp  Recovered Customized I
+    </figcaption> -->
+
+    <img style="width:23%;" src="videos/flower_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+    <img style="width:23%;" src="videos/flower_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <img style="width:23%;" src="videos/flower_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+     <img style="width:17%;" src="videos/flower_rec.gif">
+     <br><br>
+
+     <img style="width:23%;" src="videos/fortress_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+     <img style="width:23%;" src="videos/fortress_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+     <img style="width:23%;" src="videos/fortress_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+      <img style="width:17%;" src="videos/fortress_rec.gif">
+
+    <figcaption>  &nbsp &nbsp StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp &nbsp &nbsp&nbsp &nbsp Residual v.s. Initial Renderings (x5) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp &nbsp Residual (x25)  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp&nbsp &nbsp &nbsp Recovered Customized Info.
+    </figcaption>
+
+    <br>
+
+    <div class="section">
+      <h3>Multi-Modal Steganography</h3>
+      <p>
+        Applying our StegaNeRF pipeline to embed multi-modal information. Please see the video below for detailed exhibition. 
+      </p>
+        <img  style="width:25%;" src="multi-modal/trex_ren.gif"> &nbsp &nbsp&nbsp
+      <img style="width:25%;" src="multi-modal/trex_res.gif"> &nbsp &nbsp&nbsp
+      <img style="width:18%;" src="multi-modal/trex_rec.gif"> &nbsp &nbsp&nbsp
+       <img style="width:23%;" src="multi-modal/图片1.png">
+  
+       <br><br>
+      <!-- <figcaption>  &nbsp &nbsp Rendering Views &nbsp &nbsp &nbsp  Residual Error (x5).  &nbsp &nbsp &nbsp &nbsp   Residual Error (x25).  &nbsp &nbsp  Recovered Customized I
+      </figcaption> -->
+  
+      <img  style="width:25%;" src="multi-modal/horns_ren.gif"> &nbsp &nbsp&nbsp
+      <img style="width:25%;" src="multi-modal/horns_res.gif"> &nbsp &nbsp&nbsp
+      <img style="width:18%;" src="multi-modal/horns_rec.gif"> &nbsp &nbsp&nbsp
+       <img style="width:23%;" src="multi-modal/图片2.png">
+
+       <br><br>
+<!--   
+       <img style="width:23%;" src="videos/fortress_ren.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+       <img style="width:23%;" src="videos/fortress_res5.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+       <img style="width:23%;" src="videos/fortress_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <img style="width:17%;" src="videos/fortress_rec.gif">
+   -->
+      <figcaption>  &nbsp &nbsp StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp &nbsp &nbsp&nbsp &nbsp Residual v.s. Initial Renderings (x25) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Image Recovery  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Multi-Moda (audio&text) Recovery
+      </figcaption>
+
+      <br>
+
+	<!-- <h3>Localizing CLIPNeRF via Scene Decomposition</h3>
+        <p>
+	  CLIPNeRF optimizes a NeRF scene with a text prompt.
+	  However, naive CLIPNeRF poisons unintentional parts.
+	  We can combine our decomposition method with CLIPNeRF and selectively optimize the target object.
+        </p>
+	<div style="display: flex; padding: 0px; margin-bottom: -0.5rem;">
+	  <div style="width: 16%">
+	    <h5 align="center">naive CLIPNeRF</h5>
+	  </div>
+	  <div style="width: 4%"></div>
+	  <div style="width: 16%">
+	    <h5 align="center">+ Our method</h5>
+	  </div>
+	</div>
+	<div style="display: flex; padding: 0px">
+	  <div style="max-width: 16%">
+	    <h5 align="center">white flower</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.leaked_white_flower.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="width: 4%"></div>
+	  <div style="max-width: 16%">
+	    <h5 align="center">white flower</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.white_flower.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 16%">
+	    <h5 align="center">yellow flower</h5>
+            <video class="video" autoplay="true" loop="true"  style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.yellow_flower.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 16%">
+	    <h5 align="center">sunflower</h5>
+            <video class="video" autoplay="true" loop="true"  style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.sunflower.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 16%">
+	    <h5 align="center">rainbow flower</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.rainbow_flower.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 16%">
+	    <h5 align="center">petunia</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.petunia.30.60.mp4">
+            </video>
+	  </div>
+	</div>
+    </div> -->
+
+    <!-- <div class="section">
+        <h3>Other Editings</h3>
+	<p>
+	  We can edit decomposed objects of NeRF scenes in various ways, e.g., rotate, translate, scale, warp into another scene, colorize, or delete them.
+        </p>
+	<div style="display: flex; padding: 0px">
+	  <div style="max-width: 25%">
+	    <h5 align="center">move and deform apple</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.deform_apple.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">(LSeg field)</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.deform_apple_feature.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">warp horns</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.warp_horns_to_room.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">(DINO field)</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.warp_horns_to_room_feature.30.60.mp4">
+            </video>
+	  </div>
+	</div>	
+	<br>
+
+	<div style="display: flex; padding: 0px; margin-bottom: -0.5rem;">
+	  <div style="width: 25%">
+	    <h5 align="left">colorize</h5>
+	  </div>
+	</div>
+	<div style="display: flex; padding: 0px">
+	  <div style="max-width: 25%">
+	    <h5 align="center">light</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.light_color.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">chair</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.chair_color.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">television</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.television_color.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">floor</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.floor_color.30.60.mp4">
+            </video>
+	  </div>
+	</div>
+	<br>
+	<div style="display: flex; padding: 0px; margin-bottom: -0.3rem;">
+	  <div style="width: 100%">
+	    <h5 align="left" style="display:inline;">delete</h5>
+	    &nbsp;&nbsp;<p style="display:inline; color:silver;">(Note that the background behind the deleted objects can be noisy or have a hole because it lacks observation.)</p>
+	  </div>
+	</div>
+	<div style="display: flex; padding: 0px">
+	  <div style="max-width: 25%">
+	    <h5 align="center">light</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.light_deletion.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">chair</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.chair_deletion.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">television</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.television_deletion.30.60.mp4">
+            </video>
+	  </div>
+	  <div style="max-width: 25%">
+	    <h5 align="center">floor</h5>
+            <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+              <source src="web/mov/out.floor_deletion.30.60.mp4">
+            </video>
+	  </div>
+	</div> -->
+
+    <!-- </div>
+    <br><br>
+    <div class="section">
+      <h3>LSeg Feature Field</h3>
+      <p>We visualize a feature field distilled from LSeg as a techer network by PCA. The flower scene is from <a href="https://bmild.github.io/llff/">LLFF</a></p>
+    <div class="img-comp-container">
+      <div class="img-comp-img">
+	<div style="width: 504px;">
+          <video class="video" autoplay="true" loop="true" autoplay muted>
+            <source src="web/mov/out.raw_flower_feature.30.60.mp4">
+          </video>
+	</div>
+      </div>
+      <div class="img-comp-img img-comp-overlay">
+	<div style="width: 504px;">
+          <video class="video" autoplay="true" loop="true" autoplay muted>
+	    <source src="web/mov/out.raw_flower.30.60.mp4">
+          </video>
+	</div>
+      </div>
+    </div> -->
+
+    <script>
+      /*Execute a function that will execute an image compare function for each element with the img-comp-overlay class:*/
+      initComparisons();
+    </script>
+    
+    </div>
+    <!-- <div class="section">
+      <h3>Other DINO Feature Fields</h3>
+      <p>We visualize feature fields distilled from DINO as a techer network by PCA. Scenes are from <a href="https://bmild.github.io/llff/">LLFF</a>, <a href="https://nex-mpi.github.io/">shiny dataset</a>, and our dataset.</p>
+      <div style="display: flex; padding: 0px">
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_0.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_1.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_2.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_3.png" style="max-width: 100%">
+	</div>
+      </div>
+      <div style="display: flex; padding: 0px">
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_4.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_5.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_6.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_7.png" style="max-width: 100%">
+	</div>
+      </div>
+      <div style="display: flex; padding: 0px">
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_8.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_9.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_10.png" style="max-width: 100%">
+	</div>
+	<div style="max-width: 25%">
+	  <img src="web/img/dino_fields/rgb_feat_11.png" style="max-width: 100%">
+	</div>
+      </div>
+    </div> -->
+
+    <br>
+
+    <div class="section">
+      <h2>Video</h2>
+      <div class="publication-video">
+        <iframe src="https://youtu.be/sFdZU2dpqUw"
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+  </div>
+
+    <br>
+        <div class="section">
+      <h3>Citation</h3>
+      <div class="form-group col-md-10">
+        <!-- <textarea id="bibtex" class="form-control" rows=8 readonly>
+@inproceedings{kobayashi2022distilledfeaturefields,
+  title={Decomposing NeRF for Editing via Feature Field Distillation},
+  author={Sosuke Kobayashi and Eiichi Matsumoto and Vincent Sitzmann},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume = {35},
+  url = {https://arxiv.org/pdf/2205.15585.pdf},
+  year={2022}
+}
+</textarea> -->
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+</body>
+</html>
