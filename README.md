@@ -16,27 +16,36 @@
 
 </div>
 
-## Pipeline
+<!-- ## Pipeline -->
 
-![](./docs/static/media/SinNeRF.drawio.01f837d9d69b1db62c00.jpg)
+<!-- <div align=center><img src="doc/MOTIVATION_V2.svg" height = "70%" width = "70%"/></div> -->
+<!-- ![](doc/MOTIVATION_V2.svg) -->
 
-## Code
+## Method
+
+<div align=center><img src="doc/METHOD_V2.svg" height = "100%" width = "90%"/></div>
+<!-- ![](doc/MOTIVATION_V2.svg) -->
+
+## Quick start
 
 ### Environment
 
 ```
-pip install -r requirements.txt
+. ./create_env.sh
 ```
+<!-- Note: some errors may happen when installing the main library of [svox2](https://github.com/sxyu/svox2) including a CUDA extension, which is mainly due to the imcompatable   -->
 
-### Dataset Preparation
+### Dataset
 
 Please download the datasets from these links:
 
 - NeRF synthetic: Download `nerf_synthetic.zip` from https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1
 - LLFF: Download `nerf_llff_data.zip` from https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1
-- DTU: Download the preprocessed DTU training data from https://drive.google.com/file/d/1eDjh-_bxKKnEuz5h-HXS7EDJn59clx6V/view
+- NeRF-W: Download `brandenburg_gate (4.0G)` from https://www.cs.ubc.ca/~kmyi/imw2020/data.html. More details to use this dataset can be found [here](https://github.com/kwea123/nerf_pl/tree/nerfw).
 
-Please download the depth from here: https://drive.google.com/drive/folders/13Lc79Ox0k9Ih2o0Y9e_g_ky41Nx40eJw?usp=sharing
+<!-- - DTU: Download the preprocessed DTU training data from https://drive.google.com/file/d/1eDjh-_bxKKnEuz5h-HXS7EDJn59clx6V/view
+
+Please download the depth from here: https://drive.google.com/drive/folders/13Lc79Ox0k9Ih2o0Y9e_g_ky41Nx40eJw?usp=sharing -->
 
 ### Training
 
