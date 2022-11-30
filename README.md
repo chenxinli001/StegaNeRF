@@ -2,60 +2,13 @@
 [[Paper]](https://github.com/XGGNet/StegaNeRF) [[Website]](https://xggnet.github.io/StegaNeRF/)
 <div>
 
-  <div style="display: flex; padding: 0px">
-  <div style="max-width: 15%">
-    <!-- <h5 align="center">Rendering Views</h5> -->
-          <!-- <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-            <source src="doc/lego_rensu_.mp4">
-          </video> -->
-          <video id="video" controls="" preload="none" poster="封面">
-      <source id="mp4" src="mp4格式视频" type="doc/lego_rensu_.mp4">
-</videos>
-  </div>
-  <div style="max-width: 15%">
-    <!-- <h5 align="center">Residual Error (x25)</h5> -->
-          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-            <source src="videos/lego_ressu_.mp4">
-          </video>
-  </div>
 
-  <div style="max-width: 15%">
-    <!-- <h5 align="center">Recovered Information</h5> -->
-          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-            <source src="videos/lego_recsu_resize.mp4">
-          </video>
-  </div>  
-
-  <div style="width: 10%"></div>
-
-  <div style="max-width: 15%">
-    <!-- <h5 align="center">Rendering Views</h5> -->
-          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-            <source src="doc/drums_rensu_.mp4">
-          </video>
-  </div>
-  <div style="max-width: 15%">
-    <!-- <h5 align="center">Residual Error (x25)</h5> -->
-          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-            <source src="videos/drums_ressu_.mp4">
-          </video>
-  </div>
-
-  <div style="max-width: 15%">
-    <!-- <h5 align="center">Recovered Information</h5> -->
-          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-            <source src="videos/drums_recsu_resize.mp4">
-          </video>
-  </div>  
-
-
-<!-- 
 <img src="doc/lego_ren.gif" height="120"/>
 <img src="doc/lego_res.gif" height="120"/>
 <img src="doc/lego_rec.gif" height="120"/>
 <img src="doc/drums_ren.gif" height="120"/>
 <img src="doc/drums_res.gif" height="120"/>
-<img src="doc/drums_rec.gif" height="120"/>  -->
+<img src="doc/drums_rec.gif" height="120"/> 
 
 </div>
 <!-- ## Pipeline -->
