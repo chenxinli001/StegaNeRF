@@ -218,7 +218,7 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
       Our <i>distilled feature fields (DFFs)</i> are trained by distilling 2D vision encoders such as <a href="https://arxiv.org/abs/2201.03546">LSeg</a> (CLIP-based zero-shot segmentation model) or <a href="https://arxiv.org/abs/2104.14294">DINO</a> (self-supervised model with good performances in part correspondense tasks) without any 3D or 2D annotations.
       The learned feature fields can map every 3D coordinate to a semantic feature descriptor of that coordinate as well as radinace fields.
       We can segment the 3D space and the corresponding radiance fields by querying a feature vector and calculating scores via dot product. -->
-    </p>
+    <!-- </p> -->
 
     <div class="section">
         <h3>Single-Scene Steganography</h3>
@@ -280,6 +280,7 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
                 <source src="videos/lego_ressu_.mp4">
               </video>
       </div>
+      <!-- <div style="width: 5%"></div> -->
       <div style="max-width: 25%">
         <!-- <h5 align="center">Recovered Information</h5> -->
               <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
@@ -345,7 +346,7 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
       </div>
     </div>	
 
-     <figcaption>  &nbsp &nbsp StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp Residual v.s. Initial Renderings (x5) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Residual (x25)  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp&nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Recovered Customized Info.
+     <figcaption>  &nbsp &nbsp StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp Residual v.s. Initial Renderings (x5) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Residual (x25)  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp&nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  Recovered Customized Info.
         </figcaption>
         
 	<br>
@@ -365,19 +366,22 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
                <source src="videos/fern_ren.mp4">
              </video>
      </div>
+     <div style="width: 2%"></div>
      <div style="max-width: 25%">
        <!-- <h5 align="center">Residual Error (x5)</h5> -->
              <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                <source src="videos/fern_res5.mp4">
              </video>
      </div>
+     <div style="width: 2%"></div>
      <div style="max-width: 25%">
        <!-- <h5 align="center">Residual Error (x25)</h5> -->
              <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                <source src="videos/fern_res.mp4">
              </video>
      </div>
-     <div style="max-width: 25%">
+     <div style="width: 2%"></div>
+     <div style="max-width: 18%">
        <!-- <h5 align="center">Recovered Information</h5> -->
              <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                <source src="videos/fern_rec_resize.mp4">
@@ -394,19 +398,22 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
               <source src="videos/flower_ren.mp4">
             </video>
     </div>
+    <div style="width: 2%"></div>
     <div style="max-width: 25%">
       <!-- <h5 align="center">Residual Error (x5)</h5> -->
             <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
               <source src="videos/flower_res5.mp4">
             </video>
     </div>
+    <div style="width: 2%"></div>
     <div style="max-width: 25%">
       <!-- <h5 align="center">Residual Error (x25)</h5> -->
             <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
               <source src="videos/flower_res.mp4">
             </video>
     </div>
-    <div style="max-width: 25%">
+    <div style="width: 2%"></div>
+    <div style="max-width: 18%">
       <!-- <h5 align="center">Recovered Information</h5> -->
             <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
               <source src="videos/flower_rec_resize.mp4">
@@ -423,19 +430,22 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
               <source src="videos/fortress_ren.mp4">
             </video>
     </div>
+    <div style="width: 2%"></div>
     <div style="max-width: 25%">
       <!-- <h5 align="center">Residual Error (x5)</h5> -->
             <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
               <source src="videos/fortress_res5.mp4">
             </video>
     </div>
+    <div style="width: 2%"></div>
     <div style="max-width: 25%">
       <!-- <h5 align="center">Residual Error (x25)</h5> -->
             <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
               <source src="videos/fortress_res.mp4">
             </video>
     </div>
-    <div style="max-width: 25%">
+    <div style="width: 2%"></div>
+    <div style="max-width: 18%">
       <!-- <h5 align="center">Recovered Information</h5> -->
             <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
               <source src="videos/fortress_rec_resize.mp4">
@@ -454,6 +464,8 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
         Applying our StegaNeRF pipeline to embed multi-modal information. Please see the video below for detailed exhibition. 
       </p>
 
+      <br>
+
       <div style="display: flex; padding: 0px">
         <div style="max-width: 25%">
           <!-- <h5 align="center">Rendering Views</h5> -->
@@ -461,26 +473,31 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
                   <source src="multi-modal/trex_ren.mp4">
                 </video>
         </div>
+        <div style="width: 4%"></div>
         <div style="max-width: 25%">
           <!-- <h5 align="center">Residual Error (x5)</h5> -->
                 <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                   <source src="multi-modal/trex_res.mp4">
                 </video>
         </div>
-        <div style="max-width: 25%">
+        <div style="width: 4%"></div>
+        <div style="max-width: 19%">
           <!-- <h5 align="center">Residual Error (x25)</h5> -->
                 <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-                  <source src="multi-modal/trex_rec.mp4">
+                  <source src="multi-modal/trex_rec_resize.mp4">
                 </video>
         </div>
+        <div style="width: 4%"></div>
         <div style="max-width: 25%">
           <!-- <h5 align="center">Recovered Information</h5> -->
                 <!-- <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                   <source src="videos/fortress_rec_resize.mp4">
                 </video> -->
-                <img style="width:100%;" src="multi-modal/图片1.png">
+                <img style="width:90%;" src="multi-modal/图片1.png"  style="margin-top: -3rem;">
         </div>
       </div>	
+
+          <br>
 
       <div style="display: flex; padding: 0px">
         <div style="max-width: 25%">
@@ -489,28 +506,29 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
                   <source src="multi-modal/horns_ren.mp4">
                 </video>
         </div>
+        <div style="width: 4%"></div>
         <div style="max-width: 25%">
           <!-- <h5 align="center">Residual Error (x5)</h5> -->
                 <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                   <source src="multi-modal/horns_res.mp4">
                 </video>
         </div>
-        <div style="max-width: 25%">
+        <div style="width: 4%"></div>
+        <div style="max-width: 19%">
           <!-- <h5 align="center">Residual Error (x25)</h5> -->
                 <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
-                  <source src="multi-modal/horns_rec.mp4">
+                  <source src="multi-modal/horns_rec_resize.mp4">
                 </video>
         </div>
+        <div style="width: 4%"></div>
         <div style="max-width: 25%">
           <!-- <h5 align="center">Recovered Information</h5> -->
                 <!-- <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
                   <source src="videos/fortress_rec_resize.mp4">
                 </video> -->
-                <img style="width:100%;" src="multi-modal/图片2.png">
+                <img style="width:90%;" src="multi-modal/图片2.png">
         </div>
       </div>	
-
-
 
 <!-- 
         <img  style="width:25%;" src="multi-modal/trex_ren.gif"> &nbsp &nbsp&nbsp
@@ -534,7 +552,7 @@ Our experiments validate that the <i>distilled feature fields (DFFs)</i> can tra
        <img style="width:23%;" src="videos/fortress_res.gif"> &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <img style="width:17%;" src="videos/fortress_rec.gif">
    -->
-      <figcaption>  &nbsp &nbsp StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp &nbsp &nbsp&nbsp &nbsp Residual v.s. Initial Renderings (x25) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Image Recovery  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Multi-Moda (audio&text) Recovery
+      <figcaption>  &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp  StegaNeRF Renderings &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp &nbsp Residual v.s. Initial Renderings (x25) &nbsp &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Image Recovery  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Multi-Moda (audio&text) Recovery
       </figcaption>
 
       <br>
