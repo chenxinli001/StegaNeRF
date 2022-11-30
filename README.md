@@ -1,6 +1,7 @@
 # StegaNeRF: Embedding Invisible Information within Neueral Radiance Fields
 [[Paper]](https://github.com/XGGNet/StegaNeRF) [[Website]](https://xggnet.github.io/StegaNeRF/)
-<div>
+
+
 
   <div style="display: flex; padding: 0px">
   <div style="max-width: 15%">
@@ -45,7 +46,7 @@
           </video>
   </div>  
 
-</div>	
+
 
 
 <!-- <img src="doc/lego_ren.gif" height="120"/>
@@ -55,7 +56,7 @@
 <img src="doc/drums_res.gif" height="120"/>
 <img src="doc/drums_rec.gif" height="120"/> -->
 
-</div>
+
 <!-- ## Pipeline -->
 <!-- <div align=center><img src="doc/MOTIVATION_V2.svg" height = "70%" width = "70%"/></div> -->
 <!-- ![](doc/MOTIVATION_V2.svg) -->
