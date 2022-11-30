@@ -23,7 +23,7 @@
           </video>
   </div>  
 
-  <div style="width: 5%"></div>
+  <div style="width: 10%"></div>
 
   <div style="max-width: 15%">
     <!-- <h5 align="center">Rendering Views</h5> -->
