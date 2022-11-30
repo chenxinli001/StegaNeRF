@@ -1,6 +1,37 @@
 # StegaNeRF: Embedding Invisible Information within Neueral Radiance Fields
 [[Paper]](https://github.com/XGGNet/StegaNeRF) [[Website]](https://xggnet.github.io/StegaNeRF/)
 <div>
+
+  <div style="display: flex; padding: 0px">
+  <div style="max-width: 15%">
+    <!-- <h5 align="center">Rendering Views</h5> -->
+          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+            <source src="doc/lego_rensu_.mp4">
+          </video>
+  </div>
+  <div style="max-width: 15%">
+    <!-- <h5 align="center">Residual Error (x5)</h5> -->
+          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+            <source src="videos/lego_res5su_.mp4">
+          </video>
+  </div>
+  <div style="max-width: 15%">
+    <!-- <h5 align="center">Residual Error (x25)</h5> -->
+          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+            <source src="videos/lego_ressu_.mp4">
+          </video>
+  </div>
+  
+  <!-- <div style="width: 5%"></div> -->
+  <div style="max-width: 15%">
+    <!-- <h5 align="center">Recovered Information</h5> -->
+          <video class="video" autoplay="true" loop="true" style="margin-top: -1rem;" autoplay muted>
+            <source src="videos/lego_recsu_resize.mp4">
+          </video>
+  </div>
+</div>	
+
+
 <img src="doc/lego_ren.gif" height="120"/>
 <!-- <img src="doc/lego_res5.gif" height="120"/> -->
 <img src="doc/lego_res.gif" height="120"/>
