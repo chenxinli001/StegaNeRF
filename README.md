@@ -53,8 +53,9 @@
 <img src="doc/lego_rec.gif" height="120"/>
 <img src="doc/drums_ren.gif" height="120"/>
 <img src="doc/drums_res.gif" height="120"/>
-<img src="doc/drums_rec.gif" height="120"/> 
-</div> -->
+<img src="doc/drums_rec.gif" height="120"/> -->
+
+</div>
 <!-- ## Pipeline -->
 <!-- <div align=center><img src="doc/MOTIVATION_V2.svg" height = "70%" width = "70%"/></div> -->
 <!-- ![](doc/MOTIVATION_V2.svg) -->
