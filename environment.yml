@@ -1,3 +1,4 @@
+# run: conda env create -f environment.yml
 name: stega-nerf
 channels:
   - pytorch
@@ -25,3 +26,5 @@ dependencies:
   - torchvision
   - cudatoolkit
   - tqdm
+  - icecream
+
