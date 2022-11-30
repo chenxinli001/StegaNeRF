@@ -1,4 +1,4 @@
-# Decomposing NeRF for Editing via Feature Field Distillation
+# StegNeRF: Embedding Invisible Infor
 
 ## [Project page](https://pfnet-research.github.io/distilled-feature-fields/) | [Paper](https://pfnet-research.github.io/distilled-feature-fields/dff_paper.pdf)
 
