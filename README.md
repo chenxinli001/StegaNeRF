@@ -13,9 +13,11 @@
 <!-- ## Pipeline -->
 <!-- <div align=center><img src="doc/MOTIVATION_V2.svg" height = "70%" width = "70%"/></div> -->
 <!-- ![](doc/MOTIVATION_V2.svg) -->
+
 ## Method
 <div align=center><img src="doc/METHOD_V2.svg" height = "100%" width = "90%"/></div>
 <!-- ![](doc/MOTIVATION_V2.svg) -->
+
 ## Quick start
 ### Environment
 ```
