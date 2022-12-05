@@ -38,12 +38,13 @@ Please download the depth from here: https://drive.google.com/drive/folders/13Lc
 
 ### Training
 
+<!-- cd opt && . ./stega_{llff/syn}.sh [scene_name] [style_id] -->
 ```
-cd opt && . ./stega_{llff/syn}.sh [scene_name] [style_id]
+<!-- cd opt && . ./stega_{llff/syn}.sh [scene_name] [style_id] -->
 ```
 * At the first stage, a photorealistic radiance field will first be reconstructed if it doesn't exist on disk. Then the steganographic training at the second stage ends up with the steganographic NeRF and decoder.
 * Select ```{llff/syn}``` according to your data type. For example, use ```llff``` for ```flower``` scene, ```syn``` for ```lego``` scene. 
-* ```[style_id].jpg``` is the style image inside ```./data/watermarks```. 
+* ```[embed_img]``` is the style image inside ```./data/watermarks```. 
 <!-- * For example, ```14.jpg``` is the starry night painting. -->
 <!-- * Note that a photorealistic radiance field will first be reconstructed for each scene, if it doesn't exist on disk. This will take extra time. -->
 

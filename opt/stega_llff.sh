@@ -9,14 +9,14 @@ data_dir=../data/${dataset}/${SCENE}
 style_img=../data/watermarks/${STYLE}
 
 
-if [[ ! -f "${ckpt_svox2}/ckpt.npz" ]]; then
+if [[ ! -f "${ckpt_svox2}_low/ckpt.npz" ]]; then
     python opt.py -t ${ckpt_svox2}_low  ../data/${dataset}/${SCENE} --gpuid ${GPU_ID}\
                     -c configs/${dataset}_low.json
 fi
 
 
 python opt_stega.py \
-../data/${dataset}/${SCENE}/ -c configs/${dataset}_fixgeom_wm.json \
+-t ${ckpt_ste} ${data_dir} -c configs/${dataset}_fixgeom_wm.json \
 --init_ckpt ckpt_svox2/${dataset}/${SCENE}_low/ckpt.npz \
 # --no_pre_ct --no_post_ct 
 --reset_basis_dim 0 --mse_cp init \
