@@ -32,33 +32,9 @@ from typing import NamedTuple, Optional, Union
 import pdb
 import os
 
-'''
-python opt.py -t ckpt_svox2/llff/flower_ex1 ../data/llff/flower -c configs/llff.json --gpuid 3
-
-python opt.py -t ckpt_svox2/llff/flower_low ../data/llff/flower -c configs/llff_low.json --gpuid 3
-
-python opt.py -t ckpt_svox2/llff/flower_low_ex1 ../data/llff/flower -c configs/llff_low.json --gpuid 3
-
----
-python opt.py -t ckpt_svox2/llff/flower_low2 ../data/llff/flower -c configs/llff_low2.json --gpuid 0
-python opt.py -t ckpt_svox2/llff/room_low2 ../data/llff/room -c configs/llff_low2.json --gpuid 0
-python opt.py -t ckpt_svox2/llff/fortress_low2 ../data/llff/fortress -c configs/llff_low2.json --gpuid 1
-
----
-
-python opt.py -t ckpt_svox2/llff/room_low ../data/llff/room -c configs/llff_low.json --gpuid 0
-python opt.py -t ckpt_svox2/llff/fortress_low ../data/llff/fortress -c configs/llff_low.json --gpuid 1
-
-python opt.py -t ckpt_svox2/llff/fern_low ../data/llff/fern -c configs/llff_low.json --gpuid 0
-
-python opt.py -t ckpt_svox2/llff/trex_low ../data/llff/trex -c configs/llff_low.json --gpuid 0
-python opt.py -t ckpt_svox2/llff/horns_low ../data/llff/horns -c configs/llff_low.json --gpuid 1
-python opt.py -t ckpt_svox2/llff/leaves_low ../data/llff/leaves -c configs/llff_low.json --gpuid 2
 
 
-'''
 
-# os.environ['CUDA_VISIBLE_DEVICES'] = '3' 
 
 parser = argparse.ArgumentParser()
 config_util.define_common_args(parser)
@@ -88,7 +64,7 @@ group.add_argument('--upsample_density_add', type=float, default=
                     0.0,
                     help='add the remaining density by this amount when upsampling')
 
-# SH表示 球形谐波系数，MLP是指nerf，其他不懂
+
 group.add_argument('--basis_type',
                     choices=['sh', '3d_texture', 'mlp'],
                     default='sh',
@@ -100,11 +76,11 @@ group.add_argument('--basis_reso', type=int, default=32,
 # 3*9=27
 group.add_argument('--sh_dim', type=int, default=9, help='SH/learned basis dimensions (at most 10)')
 
-# MLP的参数
+
 group.add_argument('--mlp_posenc_size', type=int, default=4, help='Positional encoding size if using MLP basis; 0 to disable')
 group.add_argument('--mlp_width', type=int, default=32, help='MLP width if using MLP basis')
 
-# background模型
+
 group.add_argument('--background_nlayers', type=int, default=0,#32,
                    help='Number of background layers (0=disable BG model)')
 group.add_argument('--background_reso', type=int, default=512, help='Background resolution')
@@ -112,7 +88,7 @@ group.add_argument('--background_reso', type=int, default=512, help='Background 
 
 group = parser.add_argument_group("optimization")
 
-# 总的训练次数
+
 group.add_argument('--n_iters', type=int, default=10 * 12800, help='total number of iters to optimize for')
 
 group.add_argument('--batch_size', type=int, default=
@@ -133,7 +109,7 @@ group.add_argument('--lr_sigma_delay_steps', type=int, default=15000,
                    help="Reverse cosine steps (0 means disable)")
 group.add_argument('--lr_sigma_delay_mult', type=float, default=1e-2)#1e-4)#1e-4)
 
-# 球谐 SH （颜色）
+
 group.add_argument('--sh_optim', choices=['sgd', 'rmsprop'], default='rmsprop', help="SH optimizer")
 group.add_argument('--lr_sh', type=float, default=
                     1e-2,
@@ -147,7 +123,7 @@ group.add_argument('--lr_sh_delay_steps', type=int, default=0, help="Reverse cos
 group.add_argument('--lr_sh_delay_mult', type=float, default=1e-2)
 group.add_argument('--lr_fg_begin_step', type=int, default=0, help="Foreground begins training at given step number")
 
-# BG LRs 背景模型：强度 和 COLOR
+
 group.add_argument('--bg_optim', choices=['sgd', 'rmsprop'], default='rmsprop', help="Background optimizer")
 group.add_argument('--lr_sigma_bg', type=float, default=3e0,
                     help='SGD/rmsprop lr for background')
@@ -166,7 +142,7 @@ group.add_argument('--lr_color_bg_delay_steps', type=int, default=0, help="Rever
 group.add_argument('--lr_color_bg_delay_mult', type=float, default=1e-2)
 # END BG LRs
 
-# 基本OPTIM?是啥？
+
 group.add_argument('--basis_optim', choices=['sgd', 'rmsprop'], default='rmsprop', help="Learned basis optimizer")
 group.add_argument('--lr_basis', type=float, default=#2e6,
                       1e-6,
@@ -184,14 +160,14 @@ group.add_argument('--lr_basis_delay_mult', type=float, default=1e-2)
 group.add_argument('--rms_beta', type=float, default=0.95, help="RMSProp exponential averaging factor")
 
 
-# 控制打印的参数
+
 group.add_argument('--print_every', type=int, default=20, help='print every')
 group.add_argument('--save_every', type=int, default=5,
                    help='save every x epochs')
 group.add_argument('--eval_every', type=int, default=1,
                    help='evaluate every x epochs')
 
-# 强度的初始化
+
 group.add_argument('--init_sigma', type=float,
                    default=0.1,
                    help='initialization sigma')
@@ -256,7 +232,7 @@ group.add_argument('--tv_contiguous', type=int, default=1,
                         help="Apply TV only on contiguous link chunks, which is faster")
 # End Foreground TV
 
-# 附加的regularization：sparsity和beta
+
 group.add_argument('--lambda_sparsity', type=float, default=
                     0.0,
                     help="Weight for sparsity loss as in SNeRG/PlenOctrees " +
@@ -332,7 +308,7 @@ dset_test = datasets[args.dataset_type](
 
 global_start_time = datetime.now()
 
-# 开一个系数体素集合
+
 grid = svox2.SparseGrid(reso=reso_list[reso_id],
                         center=dset.scene_center,
                         radius=dset.scene_radius,
@@ -397,7 +373,7 @@ resample_cameras = [
     ]
 ckpt_path = path.join(args.train_dir, 'ckpt.npz')
 
-# 各种学习率的控制
+
 lr_sigma_func = get_expon_lr_func(args.lr_sigma, args.lr_sigma_final, args.lr_sigma_delay_steps,
                                   args.lr_sigma_delay_mult, args.lr_sigma_decay_steps)
 lr_sh_func = get_expon_lr_func(args.lr_sh, args.lr_sh_final, args.lr_sh_delay_steps,
@@ -456,7 +432,7 @@ while True:
                                    width=dset_test.get_image_size(img_id)[1],
                                    height=dset_test.get_image_size(img_id)[0],
                                    ndc_coeffs=dset_test.ndc_coeffs)
-                # 全图渲染                  
+                               
                 rgb_pred_test = grid.volume_render_image(cam, use_kernel=True)
                 rgb_gt_test = dset_test.gt[img_id].to(device=device)
                 all_mses = ((rgb_gt_test - rgb_pred_test) ** 2).cpu()
@@ -489,7 +465,7 @@ while True:
                 stats_test['psnr'] += psnr
                 n_images_gen += 1
 
-            # 应该不是，应该是SH
+
             if grid.basis_type == svox2.BASIS_TYPE_3D_TEXTURE or \
                grid.basis_type == svox2.BASIS_TYPE_MLP:
                  # Add spherical map visualization
@@ -533,11 +509,11 @@ while True:
         for iter_id, batch_begin in pbar:
             gstep_id = iter_id + gstep_id_base
             
-            # 初始化 density
+       
             if args.lr_fg_begin_step > 0 and gstep_id == args.lr_fg_begin_step:
                 grid.density_data.data[:] = args.init_sigma
             
-            # 学习率
+ 
             lr_sigma = lr_sigma_func(gstep_id) * lr_sigma_factor
             lr_sh = lr_sh_func(gstep_id) * lr_sh_factor
             lr_basis = lr_basis_func(gstep_id - args.lr_basis_begin_step) * lr_basis_factor
@@ -559,7 +535,6 @@ while True:
             rays = svox2.Rays(batch_origins, batch_dirs)
 
             #  with Timing("volrend_fused"):
-            # 标准渲染
             rgb_pred = grid.volume_render_fused(rays, rgb_gt,
                     beta_loss=args.lambda_beta,
                     sparsity_loss=args.lambda_sparsity,
@@ -624,7 +599,7 @@ while True:
                         logalpha=args.tv_logalpha,
                         ndc_coeffs=dset.ndc_coeffs,
                         contiguous=args.tv_contiguous)
-            # 对SH做TV
+      
             if args.lambda_tv_sh > 0.0:
                 #  with Timing("tv_color_inpl"):
                 grid.inplace_tv_color_grad(grid.sh_data.grad,
@@ -632,7 +607,7 @@ while True:
                         sparse_frac=args.tv_sh_sparsity,
                         ndc_coeffs=dset.ndc_coeffs,
                         contiguous=args.tv_contiguous)
-            # 对lumi做TV
+   
             if args.lambda_tv_lumisphere > 0.0:
                 grid.inplace_tv_lumisphere_grad(grid.sh_data.grad,
                         scaling=args.lambda_tv_lumisphere,
@@ -659,12 +634,11 @@ while True:
             #        ' sh', torch.count_nonzero(grid.sparse_sh_grad_indexer).item())
 
             # Manual SGD/rmsprop step
-            # 优化 强度 和 SH
+    
             if gstep_id >= args.lr_fg_begin_step:
                 grid.optim_density_step(lr_sigma, beta=args.rms_beta, optim=args.sigma_optim)
                 grid.optim_sh_step(lr_sh, beta=args.rms_beta, optim=args.sh_optim)
-            # 优化 背景模型
-            # pdb.set_trace()
+   
 
             if grid.use_background:
                 grid.optim_background_step(lr_sigma_bg, lr_color_bg, beta=args.rms_beta, optim=args.bg_optim)
@@ -676,10 +650,6 @@ while True:
                     optim_basis_mlp.step()
                     optim_basis_mlp.zero_grad()
 
-    # 为了测试结果 额外加的
-    # 随机取一张VIEW，进行渲染
-
-    # pdb.set_trace()
 
     # img_id = np.random.randint(low=0, high=dset.n_images)
     img_id = 0
@@ -696,7 +666,7 @@ while True:
         height=dset.get_image_size(img_id)[0],
         ndc_coeffs=dset.ndc_coeffs,
     )
-    # dset, cam 数据都是一样的
+
 
     rgb_pred = grid.volume_render_image(cam, use_kernel=True).detach().cpu().numpy()
 

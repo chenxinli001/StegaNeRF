@@ -64,7 +64,7 @@ class VGG16UNet(nn.Module):
 
         self.pool = nn.MaxPool2d(2, 2)
 
-        self.encoder = torchvision.models.vgg16(pretrained=pretrained).features#预训练模型会自动下载
+        self.encoder = torchvision.models.vgg16(pretrained=pretrained).features#
 
         self.relu = nn.ReLU(inplace=True)
 
@@ -75,19 +75,13 @@ class VGG16UNet(nn.Module):
         #     for param in self.encoder.parameters():
         #         param.requires_grad = False
 
-        if args.C_input_S:
-    
-            self.encoder_conv1_1=nn.Conv2d(in_channel, 64, 3, padding=(1, 1))#修改VGG16的首层以使用单通道图像，此部分参数
-            self.conv1 = nn.Sequential(self.encoder_conv1_1,
-                                    self.relu,
-                                    self.encoder[2],
-                                    self.relu)
 
-        else:
-            self.conv1 = nn.Sequential(self.encoder[0],
-                                       self.relu,
-                                       self.encoder[2],
-                                       self.relu)
+    
+        self.encoder_conv1_1=nn.Conv2d(in_channel, 64, 3, padding=(1, 1))#
+        self.conv1 = nn.Sequential(self.encoder_conv1_1,
+                                self.relu,
+                                self.encoder[2],
+                                self.relu)
 
         self.conv2 = nn.Sequential(self.encoder[5],
                                    self.relu,
@@ -147,10 +141,10 @@ class VGG16UNet(nn.Module):
         x = F.interpolate(x,size=(self.args.wm_resize,self.args.wm_resize))
         # c = F.interpolate(c,size=(self.args.wm_resize,self.args.wm_resize))
 
-        if self.args.C_input_S:
-            c = c.unsqueeze(-1).unsqueeze(-1)
-            c = F.interpolate(c,size=(self.args.wm_resize,self.args.wm_resize))
-            x = torch.cat( (x,c), 1)
+        
+        c = c.unsqueeze(-1).unsqueeze(-1)
+        c = F.interpolate(c,size=(self.args.wm_resize,self.args.wm_resize))
+        x = torch.cat( (x,c), 1)
 
         conv1 = self.conv1(x) # torch.Size([2, 64, 756, 1008])
         conv2 = self.conv2(self.pool(conv1)) # torch.Size([2, 128, 378, 504])
@@ -200,17 +194,12 @@ class VGG16UNet(nn.Module):
 
 class Classifier(nn.Module):
     def __init__(self, out_channel=3, num_filters=32, pretrained=True, requires_grad=True):
-        """
-        out_channel:输出图像的通道数
-        pretrained: 是否加载预训练模型
-        """
         super().__init__()
         self.out_channel = out_channel
 
         self.pool = nn.MaxPool2d(2, 2)
 
-        self.encoder = torchvision.models.vgg16(pretrained=pretrained).features#预训练模型会自动下载
-
+        self.encoder = torchvision.models.vgg16(pretrained=pretrained).features#
         self.relu = nn.ReLU(inplace=True)
 
         # Fix vgg16
@@ -218,7 +207,7 @@ class Classifier(nn.Module):
         #     for param in self.encoder.parameters():
         #         param.requires_grad = False
 
-        # self.encoder_conv1_1=nn.Conv2d(out_channel, 64, 3, padding=(1, 1))#修改VGG16的首层以使用单通道图像，此部分参数
+        # self.encoder_conv1_1=nn.Conv2d(out_channel, 64, 3, padding=(1, 1))#
         '''
         self.conv1 = nn.Sequential(self.encoder_conv1_1,
                                    self.relu,

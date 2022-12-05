@@ -46,130 +46,6 @@ from matplotlib.colors import ListedColormap
 
 
 
-#region
-'''
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style /home2/lcx/code/nerf-watermarker/main/datasets/watermarkers/our_wm1.png --gpuid 2 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0 --w_dis_wm 0.5 --total_epoch 30 --w_rgb 1 --mse_cp gt -t ckpt_wm_single/llff/flower_wm1_cp-init_mse-gt
-
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style /home2/lcx/code/nerf-watermarker/main/datasets/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0 --w_dis_wm 0.5 --total_epoch 30 --w_rgb 1 --mse_cp init -t ckpt_wm_single/llff/flower_wm1_cp-init_mse-init
-
----
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/hard_watermarkers/000001.png --gpuid 2 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0 --w_dis_wm 0.5 --total_epoch 30 --w_rgb 1 --mse_cp init -t ckpt_wm_single/llff/flower_wm1_cp-init_mse-init
-
----
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/hard_watermarkers/000001.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0 --w_dis_wm 0.5 --total_epoch 50 --w_rgb 1 --mse_cp init -t ckpt_wm_single/llff/flower_wm1_cp-init_mse-init_hard_face
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/hard_watermarkers/scene_1.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0 --w_dis_wm 0.5 --total_epoch 50 --w_rgb 1 --mse_cp init -t ckpt_wm_single/llff/flower_wm1_cp-init_mse-init_hard_scene
-
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/hard_watermarkers/scene_1.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0 --w_dis_wm 0.5 --total_epoch 50 --w_rgb 1 --mse_cp init -t ckpt_wm_single/llff/flower_wm1_cp-init_mse-init_hard_scene_ex
-
-----
-探究
-# 不加 cls, 只加 wm 和 wm_ctr
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0 --total_epoch 30 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.75 --w_wm_ctr 0.5 --w_dis_wm 0 --total_epoch 50 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX1
-
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.75 --w_wm_ctr 0.75 --w_dis_wm 0 --total_epoch 50 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX2
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0 --total_epoch 100 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX3
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1.5 --w_wm_ctr 1.5 --w_dis_wm 0 --total_epoch 100 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX4
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1.5 --w_wm_ctr 1.5 --w_dis_wm 0 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX4_unet-lr-dy
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 2 --w_wm_ctr 2 --w_dis_wm 0 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX6
-
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 5 --w_wm_ctr 5 --w_dis_wm 0 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX7
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0 --total_epoch 100 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr_EX8 --wm_resize 512
-
-
-----
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_EX1
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 
---w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_EX1 --C_input_S
-
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_EX1 --C_input_S
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrdecy_EX1 --C_input_S
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrdecy_EX2 --C_input_S
-
----
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low2/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study_low2/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrdecy --C_input_S
-
----
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study2/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_EX1 --C_input_S
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study2/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_EX2 --C_input_S
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study2/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_EX3 --C_input_S
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/our_wm1.png --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study2/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_EX3_re1 --C_input_S
-
----
-# extend exps for llff, with the CVPR'S official logo as watermarkers
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay --C_input_S
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size256 --C_input_S --wm_resize 256
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/flower_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size512 --C_input_S --wm_resize 512
-
-python opt_style_cp_init.py ../data/llff/room/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/room_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/room_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
-python opt_style_cp_init.py ../data/llff/fortress/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fortress_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/fortress_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
-python opt_style_cp_init.py ../data/llff/fern/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fern_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/fern_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
----
-1003 验证 单场景的效果
-python opt_style_cp_init.py ../data/llff/fern/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fern_low/ckpt.npz --style ../data/watermarkers/logo.jpg --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 1 --w_wm_ctr 1 --w_dis_wm 0.01 --total_epoch 75 --w_rgb 1 --mse_cp init -t ckpt_wm_single_study3/llff/fern_wm1_cp-init_mse-init_wm+wm_ctr+dis_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 --gpuid 4
-
----
-1004 重跑几个单场景的结果 以 统一
->flower
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 2 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 55 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/flower_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 1 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 65 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/flower_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128_RE1 --C_input_S --wm_resize 128 
-
->room
-python opt_style_cp_init.py ../data/llff/room/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/room_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 3 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 55 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/room_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
-python opt_style_cp_init.py ../data/llff/room/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/room_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 0 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.05 --total_epoch 65 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/room_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.05_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128
-
-python opt_style_cp_init.py ../data/llff/room/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/room_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 2 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.1 --total_epoch 65 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/room_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.1_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128
-
-> fern
-python opt_style_cp_init.py ../data/llff/fern/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fern_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 4 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 55 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/fern_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
-python opt_style_cp_init.py ../data/llff/fern/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fern_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 4 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 65 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/fern_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128_RE1 --C_input_S --wm_resize 128 
-
-
->fortress
-python opt_style_cp_init.py ../data/llff/fortress/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fortress_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 5 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 55 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/fortress_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128 --C_input_S --wm_resize 128 
-
-
-python opt_style_cp_init.py ../data/llff/fortress/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/fortress_low/ckpt.npz --style ../data/watermarkers/logo.jpg --gpuid 5 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 65 --w_rgb 1 --mse_cp init -t ckpt_wm_single1004/llff/fortress_wm1_cp-init_mse-init_rgb:1wm:0.5+wm_ctr:0.5+dis:0.01_CinputS_detach_lrEXPdecay_size128_RE1 --C_input_S --wm_resize 128 
-
---1008
-python opt_style_cp_init.py ../data/llff/flower/ -c configs/llff_fixgeom_wm.json --init_ckpt ckpt_svox2/llff/flower_low/ckpt.npz --style ../data/multi-modal/trex.jfif --gpuid 2 --no_pre_ct --no_post_ct --reset_basis_dim 0 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --total_epoch 55 --w_rgb 1 --mse_cp init -t ckpt_temp_ex/llff/flower-w/-trex --C_input_S --wm_resize 128 
-
-
-'''
 
 
 def str2bool(str):
@@ -181,7 +57,7 @@ config_util.define_common_args(parser)
 
 parser.add_argument("--suffix",type=str,default=None)
 parser.add_argument("--root",type=str, default=None)
-parser.add_argument("--prefix",type=str, default=None)
+# parser.add_argument("--prefix",type=str, default=None)
 
 '''
 sh_mask
@@ -628,7 +504,7 @@ dataset_name = args.data_dir.split('/')[-3]
 style_name = args.style.split('/')[-1]
 
 
-args.train_dir = f'{args.root}/{args.prefix}/{dataset_name}-{scene_name}/{style_name}' 
+args.train_dir = f'{args.root}/{dataset_name}-{scene_name}-{style_name}' 
 
 
 args.train_dir = args.train_dir + '_' + args.suffix
