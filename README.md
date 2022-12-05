@@ -4,11 +4,11 @@
 
 
 If you find our paper useful, please consider citing:
-<!-- ```bibtex
-@article{kobayashi2022distilledfeaturefields,
-  title={Decomposing NeRF for Editing via Feature Field Distillation},
-  author={Sosuke Kobayashi and Eiichi Matsumoto and Vincent Sitzmann},
-  journal={arXiv},
-  year={2022}
-}
-``` -->
+```bibtex
+@inproceedings{li2022steganerf,
+        title={StegaNeRF: Embedding Invisible Information within Neural Radiance Fields},
+        author={Chenxin Li and Brandon Y. Feng and Zhiwen Fan and Panwang Pan and Zhangyang Wang},
+        booktitle={arxiv},
+        year={2022}
+      }
+```
