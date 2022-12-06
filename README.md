@@ -159,26 +159,18 @@ python eval.py  --dataset_name llff  --root_dir /dataset/nerf_llff_data/room --N
 
 ## Acknowledgement
 
-We would like to thank [Plenoxel](https://github.com/sxyu/svox2) authors for open-sourcing their implementations.
+We would like to thank [ARF](https://github.com/Kai-46/ARF-svox2) and [Plenoxel](https://github.com/sxyu/svox2) authors for open-sourcing their implementations.
 
 ## Citation
 
-If you find this repo is helpful, please cite:
-
-<!-- ```
-@InProceedings{Xu_2022_SinNeRF,
-author = {Xu, Dejia and Jiang, Yifan and Wang, Peihao and Fan, Zhiwen and Shi, Humphrey and Wang, Zhangyang},
-
-    
-        
-          
-    
-
-        
-    
-    @@ -173,4 +128,4 @@ journal={arXiv preprint arXiv:2204.00928},
-  
-title = {SinNeRF: Training Neural Radiance Fields on Complex Scenes from a Single Image},
-journal={arXiv preprint arXiv:2204.00928},
-year={2022}
+If you find this repo is helpful, please consider citing:
+```
+@misc{li2022steganerf,
+      title={StegaNeRF: Embedding Invisible Information within Neural Radiance Fields}, 
+      author={Chenxin Li and Brandon Y. Feng and Zhiwen Fan and Panwang Pan and Zhangyang Wang},
+      year={2022},
+      eprint={2212.01602},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
+````
