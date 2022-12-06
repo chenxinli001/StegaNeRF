@@ -57,33 +57,10 @@ config_util.define_common_args(parser)
 
 parser.add_argument("--suffix",type=str,default=None)
 parser.add_argument("--root",type=str, default=None)
-# parser.add_argument("--prefix",type=str, default=None)
 
-'''
-sh_mask
-'''
 
-# parser.add_argument('--sh_unmask_id_start', type=int, default=-1)
-# parser.add_argument('--sh_unmask_id_end', type=int, default=-1)
-
-# parser.add_argument('--unmask_every_color', type=str2bool, default=False)
-
-# parser.add_argument('--sh_unmask_ids', nargs='+', default=[])
-
-parser.add_argument('--sh_unmask_ratio', type=float, default=0.0)
+parser.add_argument('--mask', action='store_true', default=False, help='adaptive gradient masking')
 parser.add_argument('--n_power_softw', type=float, default=1.0)
-
-# parser.add_argument('--sh_unmask_ratio_dynamic', action='store_true', default=False)
-
-# parser.add_argument('--unmask_energy_based', action="store_true", default=False) 
-
-
-# parser.add_argument('--unmask_value_mode', choices=['ranking','energy','energy2'], default='ranking')
-# parser.add_argument('--unmask_reweight_mode', choices=['hard','soft'], default='hard')
-
-
-
-# parser.add_argument('--dynamic_unmask', action='store_true', default=False)
 
 
 parser.add_argument("--lr_unet", type=float, default=1e-3)

@@ -40,7 +40,7 @@ Please download the depth from here: https://drive.google.com/drive/folders/13Lc
 
 <!-- cd opt && . ./stega_{llff/syn}.sh [scene_name] [style_id] -->
 ```
-<!-- cd opt && . ./stega_{llff/syn}.sh [scene_name] [embed_img] -->
+cd opt && . ./stega_{llff/syn}.sh [scene_name] [embed_img]
 ```
 * At the first stage, a photorealistic radiance field will first be reconstructed if it doesn't exist on disk. Then the steganographic training at the second stage ends up with the steganographic NeRF and decoder.
 * Select ```{llff/syn}``` according to your data type. For example, use ```llff``` for ```flower``` scene, ```syn``` for ```lego``` scene. 
