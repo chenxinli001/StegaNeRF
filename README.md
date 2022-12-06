@@ -1,4 +1,4 @@
-# StegaNeRF: Embedding Invisible Information within Neural Radiance Fieldsible Infor
+# StegaNeRF: Embedding Invisible Information within Neural Radiance Fields.
 
 ## [Project page](https://xggnet.github.io/StegaNeRF/) | [Paper](https://xggnet.github.io/StegaNeRF)
 
