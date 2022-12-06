@@ -164,13 +164,11 @@ We would like to thank [ARF](https://github.com/Kai-46/ARF-svox2) and [Plenoxel]
 ## Citation
 
 If you find this repo is helpful, please consider citing:
+```bibtex
+@inproceedings{li2022steganerf,
+        title={StegaNeRF: Embedding Invisible Information within Neural Radiance Fields},
+        author={Chenxin Li and Brandon Y. Feng and Zhiwen Fan and Panwang Pan and Zhangyang Wang},
+        booktitle={arxiv},
+        year={2022}
+      }
 ```
-@misc{li2022steganerf,
-      title={StegaNeRF: Embedding Invisible Information within Neural Radiance Fields}, 
-      author={Chenxin Li and Brandon Y. Feng and Zhiwen Fan and Panwang Pan and Zhangyang Wang},
-      year={2022},
-      eprint={2212.01602},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
-}
-````
