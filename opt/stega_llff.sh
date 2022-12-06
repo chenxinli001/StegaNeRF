@@ -22,7 +22,7 @@ python opt_stega.py \
 --reset_basis_dim 0 --mse_cp init \
 --w_wm 0.5 --w_wm_ctr 0.5 --w_dis_wm 0.01 --w_rgb 1 \
 --total_epoch 55 --wm_resize 128 \
---mask --n_power_softw 5 --gpu ${GPU_ID}\
+--mask --n_power_softw 3 --gpu ${GPU_ID}\
 --style ./data/watermarks/${STYLE}
 --root ckpt --suffix mask-pow
 
