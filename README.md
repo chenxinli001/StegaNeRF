@@ -9,12 +9,11 @@
 <!-- <img src="doc/drums_ren.gif" height="120"/>
 <img src="doc/drums_res.gif" height="120"/> -->
 <!-- <img src="doc/drums_res.gif" height="120"/>  -->
-<video id="video" controls="" preload="none" poster="封面">
+<!-- <video id="video" controls="" preload="none" poster="封面">
       <source id="mp4" src="doc/web-teaser2.mp4" type="video/mp4">
-</videos>
+</videos> -->
+<video src="doc/web-teaser2.mp4"></video>
 
-
-</div>
 <!-- ## Pipeline -->
 <!-- <div align=center><img src="doc/MOTIVATION_V2.svg" height = "70%" width = "70%"/></div> -->
 <!-- ![](doc/MOTIVATION_V2.svg) -->
