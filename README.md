@@ -12,8 +12,10 @@
 <!-- <video id="video" controls="" preload="none" poster="封面">
       <source id="mp4" src="doc/web-teaser2.mp4" type="video/mp4">
 </videos> -->
-<video src="doc/web-teaser2.mp4"></video>
+<!-- <video src="doc/web-teaser2.mp4"></video> -->
 
+<img src="doc/web-teaser2.gif" height="250"/>
+      
 <!-- ## Pipeline -->
 <!-- <div align=center><img src="doc/MOTIVATION_V2.svg" height = "70%" width = "70%"/></div> -->
 <!-- ![](doc/MOTIVATION_V2.svg) -->
