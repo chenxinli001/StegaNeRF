@@ -4,11 +4,14 @@
 
 
 <!-- <img src="doc/lego_ren.gif" height="120"/> -->
-<img src="doc/lego_res.gif" height="120"/>
+<!-- <img src="doc/lego_res.gif" height="120"/> -->
 <!-- <img src="doc/lego_rec.gif" height="120"/> -->
 <!-- <img src="doc/drums_ren.gif" height="120"/>
 <img src="doc/drums_res.gif" height="120"/> -->
-<img src="doc/drums_res.gif" height="120"/> 
+<!-- <img src="doc/drums_res.gif" height="120"/>  -->
+<video id="video" controls="" preload="none" poster="封面">
+      <source id="mp4" src="doc/web-teaser2.mp4" type="video/mp4">
+</videos>
 
 
 </div>
