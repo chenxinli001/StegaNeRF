@@ -1,4 +1,4 @@
-# StegaNeRF: Embedding Invisible Information within Neueral Radiance Fields
+# StegaNeRF: Embedding Invisible Information within Neueral Radiance Fields. ICCV 2023.
 [[Paper]](https://arxiv.org/abs/2212.01602) [[Website]](https://xggnet.github.io/StegaNeRF/)
 <div>
 
