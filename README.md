@@ -74,6 +74,7 @@ Usage,
 By default this saves all frames, which is very slow. Add `--no_imsave` to avoid this.
 ## Rendering a spiral
 Use `opt/render_imgs_circle.py`
+
 Usage,
 (in opt/)
 `python render_imgs_circle.py <CHECKPOINT.npz> <data_dir>` -->
