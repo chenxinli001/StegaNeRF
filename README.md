@@ -162,7 +162,6 @@ python eval.py  --dataset_name llff  --root_dir /dataset/nerf_llff_data/room --N
 <!-- Please use `--split val` for NeRF synthetic dataset. -->
 ## Experiments on NeRF-W
 * Dataset: Download `brandenburg_gate (4.0G)` from https://www.cs.ubc.ca/~kmyi/imw2020/data.html. More details to use this dataset can be found [here](https://github.com/kwea123/nerf_pl/tree/nerfw).
-- [ ] Code to be released; stays tuned.
 
 ## Acknowledgement
 
